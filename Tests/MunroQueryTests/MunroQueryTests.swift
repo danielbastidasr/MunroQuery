@@ -243,6 +243,48 @@ final class MunroQueryTests: XCTestCase {
         )
     }
     
+    // MARK:- Limit results to Min Height
+    
+    func test_createFilterResultsMinHeight_BuildAndExecute_ShouldReturnListWithHeightSuperiorThatValue() throws {
+        // Given list
+        let listMunro: [ItemMock] = [
+            ItemMock(gridReference: "ref1", name: "Name", height: 100, category: .MUNRO, extraItem: 1),
+            ItemMock(gridReference: "ref2", name: "Name", height: 200, category: .TOP, extraItem: 2),
+            ItemMock(gridReference: "ref3", name: "Name", height: 300, category: .MUNRO, extraItem: 3),
+            ItemMock(gridReference: "ref4", name: "Name", height: 400, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref5", name: "Name", height: 500, category: .MUNRO, extraItem: 5)
+        ]
+        
+        // When creating Query and Executing
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .minHeight(of: 300)
+            .build()
+        
+        // Then return MunroQuery
+        XCTAssertEqual(sut.execute(),
+                       [
+                        ItemMock(gridReference: "ref3", name: "Name", height: 300, category: .MUNRO, extraItem: 3),
+                        ItemMock(gridReference: "ref4", name: "Name", height: 400, category: .TOP, extraItem: 4),
+                        ItemMock(gridReference: "ref5", name: "Name", height: 500, category: .MUNRO, extraItem: 5)
+                       ]
+        )
+    }
+    
+    func test_createFilterResultsMinHeightDuplicate_BuildAndExecute_ShouldThrow() throws {
+        // Given list
+        let listMunro = createList()
+        
+        // When creating Builder with minHeight
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .minHeight(of: 100)
+            
+        // Then Throw Error buidling with
+        XCTAssertThrowsError(
+            try sut
+                .minHeight(of: 300)
+        )
+    }
+    
 }
 extension MunroQueryTests{
     // MARK:- Mock Util

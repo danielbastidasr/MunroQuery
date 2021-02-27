@@ -57,6 +57,13 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
             action: .filterBy(category)
         )
     }
+    
+    
+    public func minHeight(of number: Double) throws -> MunroQueryBuilder{
+        return try addActionToBuilder(
+            action: .minHeight(number)
+        )
+    }
 }
 extension MunroQueryBuilder{
     

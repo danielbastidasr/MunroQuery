@@ -7,7 +7,6 @@ Munro Query it will help you to query and filter Munro Data.
 
 ### TODO:
 
-- Filter by Min height
 - Filter by Max height
 
 Pre req: 
@@ -24,3 +23,4 @@ Pre req:
 - Sort by height
 - Sort by name
 - Filter by Hill type
+- Filter by Min height

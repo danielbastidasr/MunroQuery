@@ -24,8 +24,8 @@ public struct MunroQuery<Item: MunroItemType>: Equatable {
         var finalList: [Item] = list.filter { item -> Bool in
             item.category != nil
         }
-        if !actions.isEmpty{
-            finalList = executeAction(actions[0], list: finalList)
+        actions.forEach { action in
+            finalList = executeAction(action, list: finalList)
         }
         return finalList
     }

@@ -408,6 +408,41 @@ final class MunroQueryTests: XCTestCase {
                 .limitResults(to: -1)
         )
     }
+    
+    
+    // MARK:- Pre req Combination of all Actions
+    func test_createAllPossibleActions_BuildAndExecute_ShouldExecuteCombinationCorrect() throws {
+        // Given list
+        let listMunro: [ItemMock] = [
+            ItemMock(gridReference: "ref1", name: "Name1", height: 100, category: .MUNRO, extraItem: 1),
+            ItemMock(gridReference: "ref2", name: "Name2", height: 200, category: .TOP, extraItem: 2),
+            ItemMock(gridReference: "ref3", name: "Name3", height: 300, category: .MUNRO, extraItem: 3),
+            ItemMock(gridReference: "ref4", name: "Name4", height: 400, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref5", name: "Name5", height: 410, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref6", name: "Name6", height: 420, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref7", name: "Name7", height: 430, category: .MUNRO, extraItem: 4),
+            ItemMock(gridReference: "ref8", name: "Name8", height: 440, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref9", name: "Name9", height: 450, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref10", name: "Name10", height: 500, category: .MUNRO, extraItem: 5)
+        ]
+        
+        // When creating Query and Executing
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .minHeight(of: 200)
+            .maxHeight(of: 450)
+            .filterBy(.MUNRO)
+            .sortByName(.ASC)
+            .sortByHeight(.DES)
+            .limitResults(to: 1)
+            .build()
+        
+        // Then return MunroQuery
+        XCTAssertEqual(sut.execute(),
+                       [
+                        ItemMock(gridReference: "ref7", name: "Name7", height: 430, category: .MUNRO, extraItem: 4)
+                       ]
+        )
+    }
 }
 extension MunroQueryTests{
     // MARK:- Mock Util

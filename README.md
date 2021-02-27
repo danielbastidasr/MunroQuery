@@ -8,8 +8,6 @@ Munro Query it will help you to query and filter Munro Data.
 ### TODO:
 
 Pre req: 
-- Can have 0 to all queries
-- Order matters (makes sense from developer perspective)
 - Error throw in case invalid query:  repeat query, query with boundaries, incompatible queries (min and max shoudl not cross boundaries),etc.
 
 
@@ -24,3 +22,7 @@ Pre req:
 - Filter by Min height
 - Filter by Max height
 - Limit results
+
+Pre req: 
+- Can have 0 to all queries
+- Order matters (makes sense from developer perspective)

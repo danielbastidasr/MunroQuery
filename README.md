@@ -22,3 +22,4 @@ Pre req:
 
 - Domain layer with Data protocol that will be used to Query list.
 - Empy Query
+- Filter null munro from the list

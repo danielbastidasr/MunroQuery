@@ -364,6 +364,12 @@ extension MunroQueryTests{
         
         ("filterByCategoryMunro", test_createFilteringCategoryMUNRO_BuildAndExecute_ShouldReturnListContainingCategoryMUNRO),
         ("filterByCategoryTop", test_createFilteringCategoryTOP_BuildAndExecute_ShouldReturnListContainingCategoryTOP),
-        ("filterByCategoryDuplicate", test_createFilteringCategoryDuplicate_BuildAndExecute_ShouldThrow)
+        ("filterByCategoryDuplicate", test_createFilteringCategoryDuplicate_BuildAndExecute_ShouldThrow),
+        
+        ("filterByMinHeight", test_createFilterResultsMinHeight_BuildAndExecute_ShouldReturnListWithHeightSuperiorThatValue),
+        ("filterByMinHeightDuplicate", test_createFilterResultsMinHeightDuplicate_BuildAndExecute_ShouldThrow),
+        
+        ("filterByMaxHeight", test_createFilterResultsMaxHeight_BuildAndExecute_ShouldReturnListWithHeightInferiorThatValue),
+        ("filterByMaxHeightDuplicate", test_createFilterResultsMaxHeightDuplicate_BuildAndExecute_ShouldThrow)
     ]
 }

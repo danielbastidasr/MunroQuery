@@ -59,12 +59,20 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
     }
     
     
+    /// Filter by Min height value
+    /// - Parameter number: Min height value
+    /// - Throws: MinHeight when trying to duplicate query
+    /// - Returns: A valid MunroQueryBuilder adding minHeight action
     public func minHeight(of number: Double) throws -> MunroQueryBuilder{
         return try addActionToBuilder(
             action: .minHeight(number)
         )
     }
     
+    /// Filter by Min height value
+    /// - Parameter number: Max height value
+    /// - Throws: MaxHeight when trying to duplicate query
+    /// - Returns: A valid MunroQueryBuilder adding maxHeight action
     public func maxHeight(of number: Double) throws -> MunroQueryBuilder{
         return try addActionToBuilder(
             action: .maxHeight(number)

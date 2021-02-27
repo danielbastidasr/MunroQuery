@@ -33,7 +33,7 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
     }
     
     
-    /// Sort by Height given and Order
+    /// Sort by Height given an Order
     /// - Parameter order: can be ASC = ascendent  or DES = descendent
     /// - Throws: OrderByHeight when trying to duplicate the query
     /// - Returns: A valid MunroQueryBuilder adding sortByHeight action
@@ -43,6 +43,27 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
         }
         
         let action = Action.orderByHeight(order)
+        if storedActions.contains(action.value) {
+            throw action.value
+        }
+        
+        var newActions: [Action] = self.actions
+        newActions.append(
+            action
+        )
+        return .init(for: list, actions: newActions)
+    }
+    
+    /// Sort by Name given an Order
+    /// - Parameter order: can be ASC = ascendent  or DES = descendent
+    /// - Throws: OrderByName when trying to duplicate the query
+    /// - Returns: A valid MunroQueryBuilder adding sortByName action
+    public func sortByName(_ order :Order) throws -> MunroQueryBuilder {
+        let storedActions = self.actions.map { action in
+            return action.value
+        }
+        
+        let action = Action.orderByName(order)
         if storedActions.contains(action.value) {
             throw action.value
         }

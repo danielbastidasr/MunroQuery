@@ -34,6 +34,8 @@ public struct MunroQuery<Item: MunroItemType>: Equatable {
         switch action {
         case .orderByHeight(let order):
             return sortByHeight(list: list, order)
+        case .orderByName(let order):
+            return sortByName(list: list, order)
         }
     }
 }
@@ -46,6 +48,17 @@ extension MunroQuery{
                 return left.height < right.height
             case .DES:
                 return left.height > right.height
+            }
+        }
+    }
+    
+    private func sortByName(list: [Item], _ order: Order) -> [Item]{
+        return list.sorted { (left, right) -> Bool in
+            switch order {
+            case .ASC:
+                return left.name < right.name
+            case .DES:
+                return left.name > right.name
             }
         }
     }

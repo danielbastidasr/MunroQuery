@@ -36,6 +36,8 @@ public struct MunroQuery<Item: MunroItemType>: Equatable {
             return sortByHeight(list: list, order)
         case .sortByName(let order):
             return sortByName(list: list, order)
+        case .filterBy(let category):
+            return filterBy(list: list, category)
         }
     }
 }
@@ -60,6 +62,12 @@ extension MunroQuery{
             case .DES:
                 return left.name > right.name
             }
+        }
+    }
+    
+    private func filterBy(list: [Item], _ category :MunroCategory) -> [Item]{
+        return list.filter{ type -> Bool in
+            category == type.category
         }
     }
 }

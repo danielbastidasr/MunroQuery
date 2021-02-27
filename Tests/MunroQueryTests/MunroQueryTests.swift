@@ -175,6 +175,74 @@ final class MunroQueryTests: XCTestCase {
                 .sortByName(.DES)
         )
     }
+    
+    
+    // MARK:- Filtering by hill category
+    
+    func test_createFilteringCategoryMUNRO_BuildAndExecute_ShouldReturnListContainingCategoryMUNRO() throws {
+        // Given list
+        let listMunro: [ItemMock] = [
+            ItemMock(gridReference: "ref1", name: "Name", height: 1000, category: .MUNRO, extraItem: 1),
+            ItemMock(gridReference: "ref2", name: "Name", height: 1000, category: .TOP, extraItem: 2),
+            ItemMock(gridReference: "ref3", name: "Name", height: 1000, category: .MUNRO, extraItem: 3),
+            ItemMock(gridReference: "ref4", name: "Name", height: 1000, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref5", name: "Name", height: 1000, category: .MUNRO, extraItem: 5)
+        ]
+        
+        // When creating Query and Executing
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .filterBy(.MUNRO)
+            .build()
+        
+        // Then return MunroQuery
+        XCTAssertEqual(sut.execute(),
+                       [
+                        ItemMock(gridReference: "ref1", name: "Name", height: 1000, category: .MUNRO, extraItem: 1),
+                        ItemMock(gridReference: "ref3", name: "Name", height: 1000, category: .MUNRO, extraItem: 3),
+                        ItemMock(gridReference: "ref5", name: "Name", height: 1000, category: .MUNRO, extraItem: 5)
+                       ]
+        )
+    }
+    
+    func test_createFilteringCategoryTOP_BuildAndExecute_ShouldReturnListContainingCategoryTOP() throws {
+        // Given list
+        let listMunro: [ItemMock] = [
+            ItemMock(gridReference: "ref1", name: "Name", height: 1000, category: .MUNRO, extraItem: 1),
+            ItemMock(gridReference: "ref2", name: "Name", height: 1000, category: .TOP, extraItem: 2),
+            ItemMock(gridReference: "ref3", name: "Name", height: 1000, category: .MUNRO, extraItem: 3),
+            ItemMock(gridReference: "ref4", name: "Name", height: 1000, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref5", name: "Name", height: 1000, category: .MUNRO, extraItem: 5)
+        ]
+        
+        // When creating Query and Executing
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .filterBy(.TOP)
+            .build()
+        
+        // Then return MunroQuery
+        XCTAssertEqual(sut.execute(),
+                       [
+                        ItemMock(gridReference: "ref2", name: "Name", height: 1000, category: .TOP, extraItem: 2),
+                        ItemMock(gridReference: "ref4", name: "Name", height: 1000, category: .TOP, extraItem: 4)
+                       ]
+        )
+    }
+    
+    func test_createFilteringCategoryDuplicate_BuildAndExecute_ShouldThrow() throws {
+        // Given list
+        let listMunro = createList()
+        
+        // When creating Builder with filterBy
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .filterBy(.MUNRO)
+            
+        // Then Throw Error buidling with
+        XCTAssertThrowsError(
+            try sut
+                .filterBy(.TOP)
+        )
+    }
+    
 }
 extension MunroQueryTests{
     // MARK:- Mock Util
@@ -201,11 +269,17 @@ extension MunroQueryTests{
     static var allTests = [
         ("EmptyList", test_createEmptyListQuery_Build_Shouldthrow),
         ("emptyQuery", test_createEmptyQuery_BuildAndExecute_ShouldReturnListWithoutNoneItem),
+        
         ("sorByHeightASC", test_createSortByHeightASC_BuildAndExecute_ShouldReturnListSortedByHeightASC),
         ("sorByHeightDES", test_createSortByHeightDESC_BuildAndExecute_ShouldReturnListSortedByHeightDESC),
         ("sorByHeightDuplicate", test_createSortByHeightDuplicate_BuildAndExecute_ShouldThrow),
+        
         ("sorByNameASC", test_createSortByNameASC_BuildAndExecute_ShouldReturnListSortedByNameASC),
         ("sorByNameDES", test_createSortByNameDES_BuildAndExecute_ShouldReturnListSortedByNameDES),
-        ("sorByNameDuplicate", test_createSortByNameDuplicate_BuildAndExecute_ShouldThrow)
+        ("sorByNameDuplicate", test_createSortByNameDuplicate_BuildAndExecute_ShouldThrow),
+        
+        ("filterByCategoryMunro", test_createFilteringCategoryMUNRO_BuildAndExecute_ShouldReturnListContainingCategoryMUNRO),
+        ("filterByCategoryTop", test_createFilteringCategoryTOP_BuildAndExecute_ShouldReturnListContainingCategoryTOP),
+        ("filterByCategoryDuplicate", test_createFilteringCategoryDuplicate_BuildAndExecute_ShouldThrow)
     ]
 }

@@ -9,6 +9,8 @@ internal enum Action: Equatable{
     case sortByHeight(Order)
     case sortByName(Order)
     
+    case filterBy(MunroCategory)
+    
     // Value determine if action was duplicated with a different value
     var value: QueryActionError{
         switch self {
@@ -16,6 +18,8 @@ internal enum Action: Equatable{
             return .SortByHeight
         case .sortByName(_):
             return .SortByName
+        case .filterBy(_):
+            return .FilterByCategory
         }
     }
 }
@@ -30,4 +34,6 @@ public enum QueryActionError: Equatable, Error {
     
     case SortByHeight
     case SortByName
+    
+    case FilterByCategory
 }

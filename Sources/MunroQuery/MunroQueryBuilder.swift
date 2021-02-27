@@ -20,12 +20,7 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
         self.list = listOfMunroItem
         self.actions = []
     }
-    
-    private init(for listOfMunroItem: [Item], actions: [Action]){
-        self.list = listOfMunroItem
-        self.actions = actions
-    }
-    
+
     /// Build will merge all queries used with the builder pattern.
     /// - Returns: MunroQuery
     public func build() -> MunroQuery<Item>{
@@ -38,20 +33,9 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
     /// - Throws: OrderByHeight when trying to duplicate the query
     /// - Returns: A valid MunroQueryBuilder adding sortByHeight action
     public func sortByHeight(_ order :Order) throws -> MunroQueryBuilder {
-        let storedActions = self.actions.map { action in
-            return action.value
-        }
-        
-        let action = Action.orderByHeight(order)
-        if storedActions.contains(action.value) {
-            throw action.value
-        }
-        
-        var newActions: [Action] = self.actions
-        newActions.append(
-            action
+        try addActionToBuilder(
+            action: .sortByHeight(order)
         )
-        return .init(for: list, actions: newActions)
     }
     
     /// Sort by Name given an Order
@@ -59,11 +43,22 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
     /// - Throws: OrderByName when trying to duplicate the query
     /// - Returns: A valid MunroQueryBuilder adding sortByName action
     public func sortByName(_ order :Order) throws -> MunroQueryBuilder {
+        try addActionToBuilder(
+            action: .sortByName(order)
+        )
+    }
+}
+extension MunroQueryBuilder{
+    
+    private init(for listOfMunroItem: [Item], actions: [Action]){
+        self.list = listOfMunroItem
+        self.actions = actions
+    }
+    
+    private func addActionToBuilder(action: Action) throws -> MunroQueryBuilder{
         let storedActions = self.actions.map { action in
             return action.value
         }
-        
-        let action = Action.orderByName(order)
         if storedActions.contains(action.value) {
             throw action.value
         }

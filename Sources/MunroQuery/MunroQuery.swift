@@ -32,9 +32,9 @@ public struct MunroQuery<Item: MunroItemType>: Equatable {
     
     private func executeAction(_ action: Action, list: [Item]) -> [Item]{
         switch action {
-        case .orderByHeight(let order):
+        case .sortByHeight(let order):
             return sortByHeight(list: list, order)
-        case .orderByName(let order):
+        case .sortByName(let order):
             return sortByName(list: list, order)
         }
     }

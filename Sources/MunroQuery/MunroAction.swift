@@ -6,16 +6,16 @@
 //
 
 internal enum Action: Equatable{
-    case orderByHeight(Order)
-    case orderByName(Order)
+    case sortByHeight(Order)
+    case sortByName(Order)
     
     // Value determine if action was duplicated with a different value
     var value: QueryActionError{
         switch self {
-        case .orderByHeight(_):
-            return .OrderByHeight
-        case .orderByName(_):
-            return .OrderByName
+        case .sortByHeight(_):
+            return .SortByHeight
+        case .sortByName(_):
+            return .SortByName
         }
     }
 }
@@ -28,6 +28,6 @@ public enum Order {
 public enum QueryActionError: Equatable, Error {
     case EmptyListInitialiser
     
-    case OrderByHeight
-    case OrderByName
+    case SortByHeight
+    case SortByName
 }

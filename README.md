@@ -1,11 +1,12 @@
 # MunroQuery
 
+[![CI](https://github.com/danielbastidasr/MunroQuery/actions/workflows/CI.yml/badge.svg)](https://github.com/danielbastidasr/MunroQuery/actions/workflows/CI.yml)
+
 Munro Query it will help you to query and filter Munro Data.
 
 
 ### TODO:
 
-- Sort by height
 - Sort by name
 
 - Filter by Hill type
@@ -23,3 +24,4 @@ Pre req:
 - Domain layer with Data protocol that will be used to Query list.
 - Empy Query
 - Filter null munro from the list
+- Sort by height

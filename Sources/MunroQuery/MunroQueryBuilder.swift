@@ -78,6 +78,19 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
             action: .maxHeight(number)
         )
     }
+    
+    /// Limit query to number of results
+    /// - Parameter number: max final number of results
+    /// - Throws: LimitNumberOutOfBoundaries (when number is not correct value) or LimitNumber (when query duplicated)
+    /// - Returns: A valid MunroQueryBuilder adding limitResults action
+    public func limitResults(to number: Int) throws -> MunroQueryBuilder{
+        if number < 0 {
+            throw QueryActionError.LimitNumberOutOfBoundaries
+        }
+        return try addActionToBuilder(
+            action:.limitTo(number)
+        )
+    }
 }
 extension MunroQueryBuilder{
     

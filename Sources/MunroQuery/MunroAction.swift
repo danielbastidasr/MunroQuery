@@ -14,6 +14,8 @@ internal enum Action: Equatable{
     case minHeight(Double)
     case maxHeight(Double)
     
+    case limitTo(Int)
+    
     // Value determine if action was duplicated with a different value
     var value: QueryActionError{
         switch self {
@@ -27,6 +29,8 @@ internal enum Action: Equatable{
             return .MinHeight
         case .maxHeight(_):
             return .MaxHeigh
+        case .limitTo(_):
+            return .LimitNumber
         }
     }
 }
@@ -46,4 +50,7 @@ public enum QueryActionError: Equatable, Error {
     
     case MinHeight
     case MaxHeigh
+    
+    case LimitNumber
+    case LimitNumberOutOfBoundaries
 }

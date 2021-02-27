@@ -23,3 +23,4 @@ Pre req:
 - Filter by Hill type
 - Filter by Min height
 - Filter by Max height
+- Limit results

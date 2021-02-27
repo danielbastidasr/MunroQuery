@@ -327,6 +327,87 @@ final class MunroQueryTests: XCTestCase {
         )
     }
     
+    // MARK:- Limit results
+    
+    func test_createLimitResults_BuildAndExecute_ShouldReturnListLimitResults() throws {
+        // Given list
+        let listMunro: [ItemMock] = [
+            ItemMock(gridReference: "ref1", name: "Name", height: 1000, category: .MUNRO, extraItem: 1),
+            ItemMock(gridReference: "ref2", name: "Name", height: 1000, category: .TOP, extraItem: 2),
+            ItemMock(gridReference: "ref3", name: "Name", height: 1000, category: .MUNRO, extraItem: 3),
+            ItemMock(gridReference: "ref4", name: "Name", height: 1000, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref5", name: "Name", height: 1000, category: .MUNRO, extraItem: 5)
+        ]
+        
+        // When creating Query and Executing
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .limitResults(to: 2)
+            .build()
+        
+        // Then return MunroQuery
+        XCTAssertEqual(sut.execute(),
+                       [
+                        ItemMock(gridReference: "ref1", name: "Name", height: 1000, category: .MUNRO, extraItem: 1),
+                        ItemMock(gridReference: "ref2", name: "Name", height: 1000, category: .TOP, extraItem: 2)
+                       ]
+        )
+    }
+    
+    func test_createLimitResultsOverLimit_BuildAndExecute_ShouldReturnListAllResults() throws {
+        // Given list
+        let listMunro: [ItemMock] = [
+            ItemMock(gridReference: "ref1", name: "Name", height: 1000, category: .MUNRO, extraItem: 1),
+            ItemMock(gridReference: "ref2", name: "Name", height: 1000, category: .TOP, extraItem: 2),
+            ItemMock(gridReference: "ref3", name: "Name", height: 1000, category: .MUNRO, extraItem: 3),
+            ItemMock(gridReference: "ref4", name: "Name", height: 1000, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref5", name: "Name", height: 1000, category: .MUNRO, extraItem: 5)
+        ]
+        
+        // When creating Query and Executing
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .limitResults(to: 10)
+            .build()
+        
+        // Then return MunroQuery
+        XCTAssertEqual(sut.execute(),
+                       [
+                        ItemMock(gridReference: "ref1", name: "Name", height: 1000, category: .MUNRO, extraItem: 1),
+                        ItemMock(gridReference: "ref2", name: "Name", height: 1000, category: .TOP, extraItem: 2),
+                        ItemMock(gridReference: "ref3", name: "Name", height: 1000, category: .MUNRO, extraItem: 3),
+                        ItemMock(gridReference: "ref4", name: "Name", height: 1000, category: .TOP, extraItem: 4),
+                        ItemMock(gridReference: "ref5", name: "Name", height: 1000, category: .MUNRO, extraItem: 5)
+                       ]
+        )
+    }
+    
+    func test_createLimitResultsDuplicate_BuildAndExecute_ShouldThrow() throws {
+        // Given list
+        let listMunro = createList()
+        
+        // When creating Builder with limitResult
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .limitResults(to: 1)
+            
+        // Then Throw Error buidling with
+        XCTAssertThrowsError(
+            try sut
+                .limitResults(to: 10)
+        )
+    }
+    
+    func test_createLimitResultsInvalidNumber_BuildAndExecute_ShouldThrow() throws {
+        // Given list
+        let listMunro = createList()
+        
+        // When creating Builder
+        let sut = try MunroQueryBuilder(for: listMunro)
+            
+        // Then Throw Error buidling with
+        XCTAssertThrowsError(
+            try sut
+                .limitResults(to: -1)
+        )
+    }
 }
 extension MunroQueryTests{
     // MARK:- Mock Util
@@ -370,6 +451,11 @@ extension MunroQueryTests{
         ("filterByMinHeightDuplicate", test_createFilterResultsMinHeightDuplicate_BuildAndExecute_ShouldThrow),
         
         ("filterByMaxHeight", test_createFilterResultsMaxHeight_BuildAndExecute_ShouldReturnListWithHeightInferiorThatValue),
-        ("filterByMaxHeightDuplicate", test_createFilterResultsMaxHeightDuplicate_BuildAndExecute_ShouldThrow)
+        ("filterByMaxHeightDuplicate", test_createFilterResultsMaxHeightDuplicate_BuildAndExecute_ShouldThrow),
+        
+        ("limitResultsToValue", test_createLimitResults_BuildAndExecute_ShouldReturnListLimitResults),
+        ("limitResultsToHighValue", test_createLimitResultsOverLimit_BuildAndExecute_ShouldReturnListAllResults),
+        ("limitResultsDuplicate", test_createLimitResultsDuplicate_BuildAndExecute_ShouldThrow),
+        ("limitResultsInvalidValue", test_createLimitResultsInvalidNumber_BuildAndExecute_ShouldThrow),
     ]
 }

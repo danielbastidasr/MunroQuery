@@ -32,6 +32,11 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
         return .init(listOfMunroItem: list, actions: actions )
     }
     
+    
+    /// Sort by Height given and Order
+    /// - Parameter order: can be ASC = ascendent  or DES = descendent
+    /// - Throws: OrderByHeight when trying to duplicate the query
+    /// - Returns: A valid MunroQueryBuilder adding sortByHeight action
     public func sortByHeight(_ order :Order) throws -> MunroQueryBuilder {
         let storedActions = self.actions.map { action in
             return action.value
@@ -47,29 +52,5 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
             action
         )
         return .init(for: list, actions: newActions)
-    }
-}
-
-public enum QueryActionError: Equatable, Error {
-    case EmptyListInitialiser
-    
-    case OrderByHeight
-}
-
-
-public enum Order {
-    case ASC
-    case DES
-}
-
-
-internal enum Action: Equatable{
-    case orderByHeight(Order)
-    
-    var value: QueryActionError{
-        switch self {
-        case .orderByHeight(_):
-            return .OrderByHeight
-        }
     }
 }

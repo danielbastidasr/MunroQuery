@@ -20,20 +20,6 @@ public struct MunroQuery<Item: MunroItemType>: Equatable {
         return executeQueries(list: list)
     }
     
-    
-    // MARK: - Actions
-    private func sortByHeight(list: [Item], _ order: Order) -> [Item]{
-        return list.sorted { (left, right) -> Bool in
-            switch order {
-            case .ASC:
-                return left.height < right.height
-            case .DES:
-                return left.height > right.height
-            }
-        }
-    }
-}
-extension MunroQuery{
     private func executeQueries(list: [Item]) -> [Item]{
         var finalList: [Item] = list.filter { item -> Bool in
             item.category != nil
@@ -48,6 +34,19 @@ extension MunroQuery{
         switch action {
         case .orderByHeight(let order):
             return sortByHeight(list: list, order)
+        }
+    }
+}
+extension MunroQuery{
+    // MARK: - Actions
+    private func sortByHeight(list: [Item], _ order: Order) -> [Item]{
+        return list.sorted { (left, right) -> Bool in
+            switch order {
+            case .ASC:
+                return left.height < right.height
+            case .DES:
+                return left.height > right.height
+            }
         }
     }
 }

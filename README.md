@@ -5,10 +5,6 @@ Munro Query it will help you to query and filter Munro Data.
 
 ### TODO:
 
-- Domain layer with Data protocol that will be used to Query list.
-
-- Empy Query
-
 - Sort by height
 - Sort by name
 
@@ -21,3 +17,8 @@ Pre req:
 - Order matters (makes sense from developer perspective)
 - Error throw in case invalid query:  repeat query, query with boundaries, incompatible queries (min and max shoudl not cross boundaries),etc.
 
+
+### Done:
+
+- Domain layer with Data protocol that will be used to Query list.
+- Empy Query

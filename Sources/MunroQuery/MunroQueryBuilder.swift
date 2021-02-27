@@ -64,6 +64,12 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
             action: .minHeight(number)
         )
     }
+    
+    public func maxHeight(of number: Double) throws -> MunroQueryBuilder{
+        return try addActionToBuilder(
+            action: .maxHeight(number)
+        )
+    }
 }
 extension MunroQueryBuilder{
     

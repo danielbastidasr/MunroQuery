@@ -12,6 +12,7 @@ internal enum Action: Equatable{
     case filterBy(MunroCategory)
     
     case minHeight(Double)
+    case maxHeight(Double)
     
     // Value determine if action was duplicated with a different value
     var value: QueryActionError{
@@ -24,6 +25,8 @@ internal enum Action: Equatable{
             return .FilterByCategory
         case .minHeight(_):
             return .MinHeight
+        case .maxHeight(_):
+            return .MaxHeigh
         }
     }
 }
@@ -42,4 +45,5 @@ public enum QueryActionError: Equatable, Error {
     case FilterByCategory
     
     case MinHeight
+    case MaxHeigh
 }

@@ -40,6 +40,8 @@ public struct MunroQuery<Item: MunroItemType>: Equatable {
             return filterBy(list: list, category)
         case .minHeight(let height):
             return filterByMinHeight(list: list, height)
+        case .maxHeight(let height):
+            return filterByMaxHeight(list: list, height)
         }
     }
 }
@@ -76,6 +78,12 @@ extension MunroQuery{
     private func filterByMinHeight(list: [Item], _ number :Double) -> [Item]{
         return list.filter{ type -> Bool in
             number <= type.height
+        }
+    }
+    
+    private func filterByMaxHeight(list: [Item], _ number :Double) -> [Item]{
+        return list.filter{ type -> Bool in
+            number >= type.height
         }
     }
 }

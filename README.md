@@ -4,13 +4,6 @@
 
 Munro Query it will help you to query and filter Munro Data.
 
-
-### TODO:
-
-Pre req: 
-- Error throw in case invalid query:  repeat query, query with boundaries, incompatible queries (min and max shoudl not cross boundaries),etc.
-
-
 ### Done:
 
 - Domain layer with Data protocol that will be used to Query list.
@@ -26,3 +19,4 @@ Pre req:
 Pre req: 
 - Can have 0 to all queries
 - Order matters (makes sense from developer perspective)
+- Error throw in case invalid query:  repeat query, query with boundaries, incompatible queries (min and max shoudl not cross boundaries),etc.

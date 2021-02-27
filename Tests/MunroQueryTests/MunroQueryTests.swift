@@ -409,8 +409,8 @@ final class MunroQueryTests: XCTestCase {
         )
     }
     
-    
     // MARK:- Pre req Combination of all Actions
+    
     func test_createAllPossibleActions_BuildAndExecute_ShouldExecuteCombinationCorrect() throws {
         // Given list
         let listMunro: [ItemMock] = [
@@ -443,6 +443,62 @@ final class MunroQueryTests: XCTestCase {
                        ]
         )
     }
+    
+    // MARK:- Limit Combination Min with Max Height
+    
+    func test_createFilterResultsMinAndMaxHeight_BuildAndExecute_ShouldExecuteCombinationCorrect() throws {
+        // Given list
+        let listMunro: [ItemMock] = [
+            ItemMock(gridReference: "ref1", name: "Name", height: 100, category: .MUNRO, extraItem: 1),
+            ItemMock(gridReference: "ref2", name: "Name", height: 200, category: .TOP, extraItem: 2),
+            ItemMock(gridReference: "ref3", name: "Name", height: 300, category: .MUNRO, extraItem: 3),
+            ItemMock(gridReference: "ref4", name: "Name", height: 400, category: .TOP, extraItem: 4),
+            ItemMock(gridReference: "ref5", name: "Name", height: 500, category: .MUNRO, extraItem: 5)
+        ]
+        
+        // When creating Query and Executing
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .minHeight(of: 200)
+            .maxHeight(of: 200)
+            .build()
+        
+        // Then return MunroQuery
+        XCTAssertEqual(sut.execute(),
+                       [
+                        ItemMock(gridReference: "ref2", name: "Name", height: 200, category: .TOP, extraItem: 2)
+                       ]
+        )
+    }
+    
+    func test_createFilterResultsMinAndMaxHeightOutOfBounds_BuildAndExecute_ShouldThrow() throws {
+        // Given list
+        let listMunro = createList()
+        
+        // When creating Builder with minHeight
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .minHeight(of: 300)
+            
+        // Then Throw Error buidling with
+        XCTAssertThrowsError(
+            try sut
+                .maxHeight(of: 100)
+        )
+    }
+    
+    func test_createFilterResultsMaxAndMinHeightOutOfBounds_BuildAndExecute_ShouldThrow() throws {
+        // Given list
+        let listMunro = createList()
+        
+        // When creating Builder with maxHeight
+        let sut = try MunroQueryBuilder(for: listMunro)
+            .maxHeight(of: 100)
+            
+        // Then Throw Error buidling with
+        XCTAssertThrowsError(
+            try sut
+                .minHeight(of: 300)
+        )
+    }
 }
 extension MunroQueryTests{
     // MARK:- Mock Util
@@ -467,30 +523,37 @@ extension MunroQueryTests{
     
     // MARK:- Aux
     static var allTests = [
+        // List and Basic query
         ("EmptyList", test_createEmptyListQuery_Build_Shouldthrow),
         ("emptyQuery", test_createEmptyQuery_BuildAndExecute_ShouldReturnListWithoutNoneItem),
-        
+        // Sorted By Height
         ("sorByHeightASC", test_createSortByHeightASC_BuildAndExecute_ShouldReturnListSortedByHeightASC),
         ("sorByHeightDES", test_createSortByHeightDESC_BuildAndExecute_ShouldReturnListSortedByHeightDESC),
         ("sorByHeightDuplicate", test_createSortByHeightDuplicate_BuildAndExecute_ShouldThrow),
-        
+        // Sort by Name
         ("sorByNameASC", test_createSortByNameASC_BuildAndExecute_ShouldReturnListSortedByNameASC),
         ("sorByNameDES", test_createSortByNameDES_BuildAndExecute_ShouldReturnListSortedByNameDES),
         ("sorByNameDuplicate", test_createSortByNameDuplicate_BuildAndExecute_ShouldThrow),
-        
+        // Filtering by hill category
         ("filterByCategoryMunro", test_createFilteringCategoryMUNRO_BuildAndExecute_ShouldReturnListContainingCategoryMUNRO),
         ("filterByCategoryTop", test_createFilteringCategoryTOP_BuildAndExecute_ShouldReturnListContainingCategoryTOP),
         ("filterByCategoryDuplicate", test_createFilteringCategoryDuplicate_BuildAndExecute_ShouldThrow),
-        
+        // Limit results to Min Height
         ("filterByMinHeight", test_createFilterResultsMinHeight_BuildAndExecute_ShouldReturnListWithHeightSuperiorThatValue),
         ("filterByMinHeightDuplicate", test_createFilterResultsMinHeightDuplicate_BuildAndExecute_ShouldThrow),
-        
+        // Limit results to Max Height
         ("filterByMaxHeight", test_createFilterResultsMaxHeight_BuildAndExecute_ShouldReturnListWithHeightInferiorThatValue),
         ("filterByMaxHeightDuplicate", test_createFilterResultsMaxHeightDuplicate_BuildAndExecute_ShouldThrow),
-        
+        // Limit results
         ("limitResultsToValue", test_createLimitResults_BuildAndExecute_ShouldReturnListLimitResults),
         ("limitResultsToHighValue", test_createLimitResultsOverLimit_BuildAndExecute_ShouldReturnListAllResults),
         ("limitResultsDuplicate", test_createLimitResultsDuplicate_BuildAndExecute_ShouldThrow),
         ("limitResultsInvalidValue", test_createLimitResultsInvalidNumber_BuildAndExecute_ShouldThrow),
+        // Limit Combination of all Actions
+        ("QueryAllPossibleActions",test_createAllPossibleActions_BuildAndExecute_ShouldExecuteCombinationCorrect),
+        // Limit Combination Min with Max Height
+        ("QueryFilterResultsMinAndMaxHeight",test_createFilterResultsMinAndMaxHeight_BuildAndExecute_ShouldExecuteCombinationCorrect),
+        ("QueryFilterResultsMinAndMaxHeightOutOfBounds",test_createFilterResultsMinAndMaxHeightOutOfBounds_BuildAndExecute_ShouldThrow),
+        ("QueryFilterResultsMaxAndMinHeightOutOfBounds",test_createFilterResultsMaxAndMinHeightOutOfBounds_BuildAndExecute_ShouldThrow)
     ]
 }

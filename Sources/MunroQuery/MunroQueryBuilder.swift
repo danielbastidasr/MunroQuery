@@ -64,6 +64,18 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
     /// - Throws: MinHeight when trying to duplicate query
     /// - Returns: A valid MunroQueryBuilder adding minHeight action
     public func minHeight(of number: Double) throws -> MunroQueryBuilder{
+        // should not be superior to MAX Height
+        try self.actions.forEach { action in
+            if (action.value == .MaxHeigh){
+                switch action {
+                case .maxHeight(let height):
+                    try checkMinAndMaxBoundaries(minValue: number, maxValue: height)
+                default:
+                    break
+                }
+            }
+        }
+        
         return try addActionToBuilder(
             action: .minHeight(number)
         )
@@ -74,6 +86,18 @@ public struct MunroQueryBuilder<Item: MunroItemType> {
     /// - Throws: MaxHeight when trying to duplicate query
     /// - Returns: A valid MunroQueryBuilder adding maxHeight action
     public func maxHeight(of number: Double) throws -> MunroQueryBuilder{
+        // should not be inferior to MIN Height
+        try self.actions.forEach { action in
+            if (action.value == .MinHeight){
+                switch action {
+                case .minHeight(let height):
+                    try checkMinAndMaxBoundaries(minValue: height, maxValue: number)
+                default:
+                    break
+                }
+            }
+        }
+        
         return try addActionToBuilder(
             action: .maxHeight(number)
         )
@@ -112,5 +136,11 @@ extension MunroQueryBuilder{
             action
         )
         return .init(for: list, actions: newActions)
+    }
+    
+    private func checkMinAndMaxBoundaries(minValue: Double, maxValue: Double) throws{
+        if maxValue < minValue{
+            throw QueryActionError.MixMaxHeightOutOfBoundaries
+        }
     }
 }

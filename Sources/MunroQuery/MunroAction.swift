@@ -52,5 +52,7 @@ public enum QueryActionError: Equatable, Error {
     case MaxHeigh
     
     case LimitNumber
+    
     case LimitNumberOutOfBoundaries
+    case MixMaxHeightOutOfBoundaries
 }
